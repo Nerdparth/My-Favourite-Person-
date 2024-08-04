@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #181818;
+    overflow-y: hidden;
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+}
+
+.cs-container {
+    width: 500px;
+    height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cs-login-container {
+    background: linear-gradient(13deg, #0B0021 0%, #241349 100%);
+}
+
+/* Chat container */
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex !important;
+    flex-direction: column;
+    min-height: 200px;
+    height: 280px;
+}
+
+/* Chat messages area */
+.chat-messages {
+    display: flex;
+    flex: 2;
+    justify-content: space-between;
+    padding: 10px;
+    overflow-y: auto; /* Ensure messages can scroll */
+}
+
+/* Single message */
+.message {
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 25px;
+    max-width: 60%;
+    word-wrap: break-word;
+    font-size: 23px;
+    font-weight: bolder;
+}
+
+/* Message from the user */
+.message.user {
+    background-color: hsla(303, 25%, 55%, 0.537);
+    color: white;
+    align-self: flex-end;
+    backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Message from the bot */
+.message.bot {
+    background-color: #ffdafd8e;
+    color: #fff;
+    align-self: flex-start;
+    backdrop-filter: blur(20px) saturate(180%);
+}
+
+.moon-img {
+    width: 280px;
+    object-fit: contain;
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    opacity: 0.8;
+    /* z-index: -1; */
+}
+
+.cs-form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    margin-top: 100px;
+}
+
+.cs-form > input, button {
+    margin-top: 10px;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+    .cs-container {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+
+    .chat-container {
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+    }
+
+    .message {
+        max-width: 80%;
+        font-size: 18px;
+    }
+
+    .moon-img {
+        width: 200px;
+        top: 5%;
+    }
+
+    .cs-form {
+        margin: 10px;
+        margin-top: 50px;
+    }
+
+    .cs-form > input, button {
+        margin-top: 5px;
+        font-size: 16px;
+    }
+}

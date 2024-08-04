@@ -2,5 +2,26 @@
 
 
 {% block content %}
+<div class="login-container">
+    <div class="d-flex justify-content-end" style="height:100px">
+        <div></div>
+        <div>
+            <img src="/media/images/moon.png" alt="" class="moon-img">
+        </div>
+    </div>
+    <div class="chat-container">
+        <div class="chat-messages">
+            <div class="message bot">need your <br>
+            favourite person?</div>
+            <div class="message user">ofc..but how?</div>
+        </div>
+      
+    </div>
+    <div class="cs-form">
+        <input type="text" name="username" class="cs-form-control" placeholder="username" id="">
+        <input type="password" name="password" class="cs-form-control" placeholder="password" id="">
+        <button>login</button>
+    </div>
+</div>
             
 {% endblock content %}
