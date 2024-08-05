@@ -12,7 +12,7 @@ def signup(request):
         myuser.email = username+"@mfp.com"
         myuser.save()
         messages.success(request, 'Your account has been created!')
-        return redirect('users/new-user')
+        return redirect('/home/')
     return render(request, "users/signup.html")
 
 def index(request):

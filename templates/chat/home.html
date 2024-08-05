@@ -1,0 +1,47 @@
+{% extends 'chat/base.html' %}
+
+
+<div class="login-container">
+    <div>
+        <div class="d-flex justify-content-end" style="height:100px">
+            <div></div>
+            <div>
+                <img src="/media/images/moon.png" alt="" class="moon-img">
+            </div>
+        </div>
+        
+        <div>
+            <form action="{% url 'signup' %}" method="POST" class="cs-form" autocomplete="off">
+                {% csrf_token %}
+                <input type="text" name="username" class="cs-form-control" placeholder="username" id=""
+                    autocomplete="off">
+                <input type="password" name="password" class="cs-form-control" placeholder="password" id=""
+                    autocomplete="off">
+                <input type="password" name="confirm_password" class="cs-form-control" placeholder="confirm password"
+                    id="" autocomplete="off">
+
+                <button>create account</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="chat-profile d-flex flex-row">
+            <div class="chat-profile-img"></div>
+            <div class="chat-profile-user mx-2  d-flex flex-column">
+                <b> My Fav Person</b>
+                <small class="font-small" style="font-size: 8px;">@XhsjdJKsdn</small>
+            </div>
+        </div>
+    </div>
+    <div class="chat-messages">
+        <div class="message bot">need your <br>
+            favourite person?</div>
+        <div class="message user">ofc..but how?</div>
+    </div>
+
+</div>
+{% endblock content %}

@@ -4,3 +4,6 @@ from django.http import HttpResponse, JsonResponse
 
 def index(request):
     return JsonResponse({'message': 'Hello World!'})
+
+def home(request):
+    return render(request, "chat/home.html")

@@ -19,17 +19,46 @@ body {
 .cs-login-container {
     background: linear-gradient(13deg, #0B0021 0%, #241349 100%);
 }
+.login-container{
+    display: flex;
+    justify-content: center;
+}
 
 /* Chat container */
 .chat-container {
-    width: 100%;
+    width: 450px;
     max-width: 600px;
-    margin: 0 auto;
-    padding: 10px;
+    margin: 0 10px 10px 0;
     display: flex !important;
     flex-direction: column;
     min-height: 200px;
-    height: 280px;
+    height: 240px;
+    background-color: #12141ed3;
+    border: 1px solid #303030;
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    overflow: hidden;
+}
+.chat-header{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #1f1f1f;
+}
+.chat-profile-img{
+    width: 35px;
+    height: 35px;
+    background: #515151;
+    border-radius: 50%;
+}
+.chat-profile-user {
+    color: #b1b1b1;
+
+}
+.chat-profile-user >b{
+    font-size: 12px;
 }
 
 /* Chat messages area */
@@ -54,18 +83,18 @@ body {
 
 /* Message from the user */
 .message.user {
-    background-color: hsla(303, 25%, 55%, 0.537);
+    background-color: #6637f3;
     color: white;
     align-self: flex-end;
-    backdrop-filter: blur(20px) saturate(180%);
+
 }
 
 /* Message from the bot */
 .message.bot {
-    background-color: #ffdafd8e;
-    color: #fff;
+    background-color: #ffffff;
+    color: #1a1a1a;
     align-self: flex-start;
-    backdrop-filter: blur(20px) saturate(180%);
+
 }
 
 .moon-img {
@@ -88,7 +117,25 @@ body {
 .cs-form > input, button {
     margin-top: 10px;
 }
+.cs-form > input {
+    background: #12141E;
+    border: 1px solid #373B59;
+    height: 50px;
+    border-radius: 15px;
+    color: white;
+    padding: 3px;
+    padding-left:8px ;
+}
 
+.cs-form > button{
+    height: 50px;
+    font-weight: 600;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background: #374EF3;
+    color: white;
+}
 .chat-messages::-webkit-scrollbar {
     width: 8px;
 }
@@ -103,18 +150,19 @@ body {
 }
 
 /* Media query for mobile devices */
-@media (max-width: 600px) {
+@media (max-width: 500px) {
+
     .cs-container {
         width: 100%;
         height: 100vh;
         margin: 0;
         padding: 0;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .chat-container {
         width: 100%;
-        height: 100%;
-        padding: 5px;
     }
 
     .message {
@@ -133,7 +181,7 @@ body {
     }
 
     .cs-form > input, button {
-        margin-top: 5px;
+        margin-top: 10px;
         font-size: 16px;
     }
 }
