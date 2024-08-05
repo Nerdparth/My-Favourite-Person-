@@ -1,32 +1,32 @@
 {% extends 'chat/base.html' %}
 
 
-<div class="login-container">
-    <div>
-        <div class="d-flex justify-content-end" style="height:100px">
-            <div></div>
-            <div>
-                <img src="/media/images/moon.png" alt="" class="moon-img">
-            </div>
-        </div>
-        
-        <div>
-            <form action="{% url 'signup' %}" method="POST" class="cs-form" autocomplete="off">
-                {% csrf_token %}
-                <input type="text" name="username" class="cs-form-control" placeholder="username" id=""
-                    autocomplete="off">
-                <input type="password" name="password" class="cs-form-control" placeholder="password" id=""
-                    autocomplete="off">
-                <input type="password" name="confirm_password" class="cs-form-control" placeholder="confirm password"
-                    id="" autocomplete="off">
 
-                <button>create account</button>
-            </form>
-
-        </div>
-    </div>
-</div>
 {% block content %}
+<style>
+    .main-message {
+    padding: 10px;
+    border-radius: 20px;
+    max-width: 60%;
+    word-wrap: break-word;
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.main-message.user {
+    background-color: #6637f3;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Message from the bot */
+.main-message.bot {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    align-self: flex-start;
+}
+</style>
+{% if request.user.is_authenticated %}
 <div class="main-chat">
     <div class="main-chat-header">
         <div class="chat-profile d-flex flex-row">
@@ -38,26 +38,72 @@
         </div>
     </div>
     <div class="chat-messages">
-        <div class="main-message bot">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, ut eligendi? 
-            Quibusdam molestiae fugit ullam modi unde dolorum placeat atque excepturi 
-            doloribus esse! Quaerat laborum, eaque aliquid dolorem reprehenderit fuga.</div>
-        <div class="main-message user">ofc..but how?</div>
-        <div class="main-message user">tell...?</div>
-        <div class="main-message bot">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, ut eligendi?
-            Quibusdam molestiae fugit ullam modi unde dolorum placeat atque excepturi
-            doloribus esse! Quaerat laborum, eaque aliquid dolorem reprehenderit fuga.</div>
-        <div class="main-message bot">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, ut eligendi?
-            Quibusdam molestiae fugit ullam modi unde dolorum placeat atque excepturi
-            doloribus esse! Quaerat laborum, eaque aliquid dolorem reprehenderit fuga.</div>
-        <div class="main-message user">tell...?</div>
-        <div class="main-message user">tell...?</div>
-
-        <div class="main-message user">tell...?</div>
-
+        <div class="message bot">need your <br>
+            favourite person?</div>
+        <div class="message user">ofc..but how?</div>
     </div>
-    <div class="chat-input">
+    <div class="chat-input-container">
         <input type="text" class="cs-form-control chat-input" placeholder="type message..">
+        <button class="send-btn"><i class="fa-solid fa-circle-arrow-right"></i></button>
     </div>
 
 </div>
+{% else %}
+<div class="main-chat d-flex justify-content-center align-items-center">
+
+    <div class="page-message text-white text-center ">
+        <b><h2>to access your person please</h2></b>
+        <a href="{% url 'login-user' %}"><button class="cs-button">login</button></a>
+    </div>
+    </div>
+{% endif %}
+
+<script>
+
+    function renderChatsToHtml(chats){
+        let chatMessages = $(".chat-messages");
+        chats.forEach(chat => {
+            let message = `<div class="main-message ${chat.sender}">${chat.message}</div>`;
+            chatMessages.append(message);
+        });
+    }
+
+    function buildchat(){
+        $.ajax({
+            url: "{% url 'get-messages' %}",
+            type: "GET",
+            success: function (response) {
+                console.log(response);
+                renderChatsToHtml(response["chat_messages"]);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    };
+    $(document).ready(function () {
+        buildchat();
+    });
+
+    $(".send-btn").on("click",(e)=>{
+        e.preventDefault();
+        let message = $(".chat-input").val();
+        $.ajax({
+            url: "{% url 'send-message' %}",
+            type: "POST",
+            data: {
+                message: message,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function (response) {
+                buildchat();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    })
+</script>
+
+
 {% endblock content %}

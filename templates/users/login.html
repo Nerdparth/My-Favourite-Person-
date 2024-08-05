@@ -27,7 +27,8 @@
         </div>
       
     </div>
-    <div class="cs-form">
+    <form class="cs-form" action="{% url 'login-user' %}" method="POST">
+        {% csrf_token %}
         <input type="text" name="username" class="cs-form-control" placeholder="username" id="">
         <input type="password" name="password" class="cs-form-control" placeholder="password" id="">
         <button>login</button>

@@ -21,8 +21,8 @@ body {
 }
 
 .login-container {
-    display: flex;
-    justify-content: center;
+    display: block;
+    padding: 20px;
 }
 
 /* Chat container */
@@ -173,6 +173,9 @@ body {
     margin-top: 10px;
 }
 
+
+
+
 .cs-form > input {
     background: #12141E;
     border: 1px solid #373B59;
@@ -192,6 +195,16 @@ body {
     background: #374EF3;
     color: white;
 }
+.cs-button {
+    height: 50px;
+    font-weight: 600;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background: #374EF3;
+    color: white;
+    min-width: 250px;
+}
 
 .chat-messages::-webkit-scrollbar {
     width: 8px;
@@ -205,6 +218,74 @@ body {
 .chat-messages::-webkit-scrollbar-track {
     background-color: #f9f9f9;
 }
+.chat-input-container{
+    display: flex;
+    width: 100%;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+.chat-input{
+    height: 50px;
+    width: 100%;
+    border-radius: 20px;
+    background: #12141E;
+    border: 1px solid #373B59;
+    color: white;
+    padding: 3px;
+    padding-left: 8px;
+}
+.send-btn{
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #374EF3;
+    font-size: 24px;
+}
+
+
+.toast {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; 
+    background-color: #fafafa; 
+    color: #fff; 
+    text-align: center; 
+    border-radius: 12px; 
+    padding: 16px; 
+    position: absolute;
+    z-index: 10; 
+    bottom: 10%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    bottom: 30px; 
+    font-size: 17px;
+    opacity: 0; /* Invisible by default */
+    transition: opacity 0.5s ease-in-out, bottom 0.5s ease-in-out;
+}
+.toast-error {
+    /* background-color: #f44336; */
+    color: rgb(60, 0, 0);
+}
+.toast-success {
+    color: rgb(0, 59, 0);
+}
+.toast-info {
+    /* background-color: #2196F3; */
+    color: rgb(0, 0, 49);
+}
+.toast-warning {
+    /* background-color: #ff9800; */
+    color: rgb(118, 87, 0);
+}
+.toast.show {
+    visibility: visible; /* Show the toast */
+    opacity: 1; /* Fully visible */
+    bottom: 50px; /* Move it up a bit */
+}
+
 
 /* Media query for mobile devices */
 @media (max-width: 500px) {
@@ -213,11 +294,9 @@ body {
         height: 100vh;
         margin: 0;
         padding: 0;
-        margin-left: 0;
-        margin-right: 0;
     }
 
-    .chat-container {
+    .chat-container,.login-container {
         width: 100%;
     }
 
