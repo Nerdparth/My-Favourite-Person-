@@ -22,6 +22,7 @@ def signup(request):
 def index(request):
     return render(request, "users/index.html")
 
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('/home/')
@@ -30,16 +31,17 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
+            login(request, user) # login here
             messages.success(request, 'You have been logged')
             return redirect('home')  # Redirect to a home page or dashboard
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'users/login.html')
 
-def logout_view(request):
-    logout(request)
-    messages.success(request, 'You have been logged')
 
+
+def logout_view(request):
+    logout(request) # logout
+    messages.success(request, 'You have been logged')
     return redirect('login-user')
 

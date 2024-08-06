@@ -44,6 +44,7 @@ def start_chat(request):
             chat = chat[0]
         chat_message = ChatMessage.objects.create(message=message, is_user_message=True, chat=chat)
         chat_message.save()
+        
         bot_message = ChatMessage.objects.create(message='Hello!', is_user_message=False, chat=chat)
         bot_message.save()
 
