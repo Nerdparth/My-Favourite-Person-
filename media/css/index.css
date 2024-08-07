@@ -39,6 +39,7 @@ body {
     backdrop-filter: blur(20px);
     border-radius: 20px;
     overflow: hidden;
+    z-index: -1;
 }
 
 .main-chat {
@@ -329,3 +330,10 @@ body {
 * {
     scrollbar-width: none;
 }
+
+.lalaland{
+    width: 500px;
+    
+}
+
+   

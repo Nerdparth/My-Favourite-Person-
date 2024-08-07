@@ -11,12 +11,14 @@ def signup(request):
         username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-
-        myuser = User.objects.create_user(username, password, confirm_password)
-        myuser.email = username+"@mfp.com"
-        myuser.save()
-        messages.success(request, 'Your account has been created!')
-        return redirect('/home/')
+        if password != confirm_password:
+           messages.error(request, 'passwords do not match')
+      
+           myuser = User.objects.create_user(username, password, confirm_password)
+           myuser.email = username+"@mfp.com"
+           myuser.save()
+           messages.success(request, 'Your account has been created!')
+           return redirect('/home/')
     return render(request, "users/signup.html")
 
 def index(request):
