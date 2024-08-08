@@ -13,12 +13,15 @@ def signup(request):
         confirm_password = request.POST['confirm_password']
         if password != confirm_password:
            messages.error(request, 'passwords do not match')
-      
+           return render(request, "users/signup.html")
+        elif User.objects.filter(username=username).exists():
+           messages.error(request, "username already exists please choose a different one")
+        else:
            myuser = User.objects.create_user(username, password, confirm_password)
            myuser.email = username+"@mfp.com"
            myuser.save()
            messages.success(request, 'Your account has been created!')
-           return redirect('/home/')
+           return redirect('/bot/bot-setup/')
     return render(request, "users/signup.html")
 
 def index(request):

@@ -335,5 +335,29 @@ body {
     width: 500px;
     
 }
+.privacymessage {
+    color: #ffffff;
+    padding-top: 30px;
+    padding-left: 40px;
+    font-size: 28px;
+    line-height: 30px;
+}
+
+.privacymessage2 {
+    color: #1a40ff;
+    position: absolute;
+    top: 52%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 29px;
+    
+}
+
+.lockicon {
+    padding-left: 302px;
+    margin-top: -71px;
+
+}
 
    
