@@ -5,26 +5,26 @@
 {% block content %}
 <style>
     .main-message {
-    padding: 10px;
-    border-radius: 20px;
-    max-width: 60%;
-    word-wrap: break-word;
-    font-size: 16px;
-    font-weight: bolder;
-}
+        padding: 10px;
+        border-radius: 20px;
+        max-width: 60%;
+        word-wrap: break-word;
+        font-size: 16px;
+        font-weight: bolder;
+    }
 
-.main-message.user {
-    background-color: #6637f3;
-    color: white;
-    align-self: flex-end;
-}
+    .main-message.user {
+        background-color: #6637f3;
+        color: white;
+        align-self: flex-end;
+    }
 
-/* Message from the bot */
-.main-message.bot {
-    background-color: #ffffff;
-    color: #1a1a1a;
-    align-self: flex-start;
-}
+    /* Message from the bot */
+    .main-message.bot {
+        background-color: #ffffff;
+        color: #1a1a1a;
+        align-self: flex-start;
+    }
 </style>
 {% if request.user.is_authenticated %}
 <div class="main-chat">
@@ -52,57 +52,112 @@
 <div class="main-chat d-flex justify-content-center align-items-center">
 
     <div class="page-message text-white text-center ">
-        <b><h2>to access your person please</h2></b>
+        <b>
+            <h2>to access your person please</h2>
+        </b>
         <a href="{% url 'login-user' %}"><button class="cs-button">login</button></a>
     </div>
-    </div>
+</div>
 {% endif %}
 
-<script>
 
-    function renderChatsToHtml(chats){
-        let chatMessages = $(".chat-messages");
-        chats.forEach(chat => {
-            let message = `<div class="main-message ${chat.sender}">${chat.message}</div>`;
-            chatMessages.append(message);
-        });
+<script>
+    let chat_id;
+    let chatSocket;
+    function scrollToBottom() {
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    function connectChatWs() {
+        chatSocket = new WebSocket(
+            'ws://' + "127.0.0.1:8000" + '/ws/chat/' + chat_id + '/'
+        );
+         chatSocket.onopen = function (e) {
+            console.log('WebSocket connection opened');
+        };
+
+        chatSocket.onclose = function (e) {
+            console.log('WebSocket connection closed');
+        };
+
+        chatSocket.onerror = function (e) {
+            console.error('WebSocket error:', e);
+        };
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log("data", data);
+            $(".chat-messages").append(generateChatToHtml(data));
+            scrollToBottom();  // Scroll to bottom after appending the message
+        };
+
+    }
+   
+
+    
+    function generateChatToHtml(chatMsg) {
+
+        let message = `<div class="main-message ${chatMsg.sender}">${chatMsg.message}</div>`;
+        return message;
     }
 
-    function buildchat(){
+    function renderChatsToHtml(chats) {
+            let chatMessages = $(".chat-messages");
+            $(".chat-messages").html("");
+            chats.forEach(chat => {
+                let message = `<div class="main-message ${chat.sender}">${chat.message}</div>`;
+                chatMessages.append(message);
+            });
+            scrollToBottom();  // Scroll to bottom after rendering all chats
+        }
+
+    function buildchat() {
         $.ajax({
-            url: "{% url 'get-messages' %}",
+            url: "http://127.0.0.1:8000/load-chat?chat_id=" + chat_id,
             type: "GET",
             success: function (response) {
                 console.log(response);
-                renderChatsToHtml(response["chat_messages"]);
+                renderChatsToHtml(response["data"]);
             },
             error: function (error) {
                 console.log(error);
             }
         });
     };
-    $(document).ready(function () {
-        buildchat();
-    });
 
-    $(".send-btn").on("click",(e)=>{
-        e.preventDefault();
-        let message = $(".chat-input").val();
+    document.querySelector('.send-btn').onclick = function (e) {
+        if (chatSocket.readyState === WebSocket.OPEN) {
+            const messageInputDom = document.querySelector('.chat-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({ 'message': message, "is_bot": "False" }));
+            messageInputDom.value = '';
+        } else {
+            console.error('WebSocket is not open. ReadyState: ', chatSocket.readyState);
+        }
+    };
+
+    $(document).ready(function () {
         $.ajax({
-            url: "{% url 'send-message' %}",
+            url: "http://127.0.0.1:8000/init-chat",
             type: "POST",
             data: {
-                message: message,
-                csrfmiddlewaretoken: "{{ csrf_token }}"
+                'user_id': "{{request.user.id}}",
             },
             success: function (response) {
+                console.log(response);
+                chat_id = response['data']['chat_id']
                 buildchat();
+                connectChatWs();
+
             },
             error: function (error) {
                 console.log(error);
             }
-        });
-    })
+        })
+    });
+
+
+
+   
 </script>
 
 
