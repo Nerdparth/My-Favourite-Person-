@@ -1,6 +1,5 @@
 {% extends 'chat/base.html' %}
 
-
 {% block content %}
 <div class="login-container">
     <div>
@@ -11,28 +10,90 @@
             </div>
         </div>
         <div class="chat-container">
-            <div class="chat-header">
+            <div class="chat-header"> 
                 <div class="chat-profile d-flex flex-row">
                     <div class="chat-profile-img"></div>
-                    <div class="chat-profile-user mx-2  d-flex flex-column">
-                        <b> My Fav Person</b>
+                    <div class="chat-profile-user mx-2 d-flex flex-column">
+                        <b>My Fav Person</b>
                         <small class="font-small" style="font-size: 8px;">@XhsjdJKsdn</small>
-                    </div>
+                    </div> 
+                </div>  
+             </div> 
+             <div><p class="privacymessage">we ensure that your <br> data is <br> with us</p></div>
+             <div><p class="privacymessage2">100% secure</p></div>
+             <div class="lockicon"><p>&#128274;</p></div>
+        </div>
+        <div>
+            <form method="post" action="{% url 'bot-setup' %}" class="cs-form">
+            {% csrf_token %}
+            <input type="text" name="name" class="cs-form-control" placeholder="name of your favourite person" id="">
+            <input type="text" name="age" class="cs-form-control" placeholder="age" id="">
+            
+            <!-- Custom Radio Buttons -->
+            <div class="radio-container">
+                <div class="radio-item">
+                    <input type="radio" name="gender" value="male" id="male" class="radio-btn">
+                    <label for="male" class="radio-label">Male</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="gender" value="female" id="female" class="radio-btn">
+                    <label for="female" class="radio-label">Female</label>
                 </div>
             </div>
-            <div class="chat-messages">
-                <div class="message bot">need your <br>
-                    favourite person?</div>
-                <div class="message user">ofc..but how?</div>
-            </div>
-
-        </div>
-        <div class="cs-form">
-            <input type="text" name="username" class="cs-form-control" placeholder="username" id="">
-            <input type="password" name="password" class="cs-form-control" placeholder="password" id="">
-            <button>login</button>
+            
+            <button type="submit">Bring to life</button>
+        </form>
         </div>
     </div>
 </div>
 
+<style>
+/* Style for the container of radio buttons */
+.cs-form > .radio-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* Hide default radio button appearance */
+.cs-form > .radio-btn {
+    -webkit-appearance: none; /* Hide default radio button in WebKit browsers */
+    -moz-appearance: none; /* Hide default radio button in Firefox */
+    appearance: none; /* Hide default radio button in other browsers */
+    width: 20px; /* Size of the custom radio button */
+    height: 20px;
+    border-radius: 50%; /* Make it circular */
+    border: 2px solid #007bff; /* Border color */
+    background-color: #fff; /* Background color */
+    cursor: pointer;
+    position: relative;
+}
+
+/* Style for the radio button when selected */
+.cs-form > .radio-btn:checked {
+    background-color: #007bff; /* Background color when checked */
+    border: 2px solid #0056b3; /* Border color when checked */
+}
+
+/* Custom checkmark */
+.cs-form > .radio-btn:checked::after {
+    content: ''; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: #fff; /* Color of the checkmark */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Label styling */
+.cs-form > .radio-label {
+    margin-left: 8px;
+    font-size: 14px;
+}
+</style>
+
 {% endblock content %}
+

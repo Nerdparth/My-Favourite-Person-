@@ -335,5 +335,84 @@ body {
     width: 500px;
     
 }
+.privacymessage {
+    color: #ffffff;
+    padding-top: 30px;
+    padding-left: 40px;
+    font-size: 28px;
+    line-height: 30px;
+}
 
-   
+.privacymessage2 {
+    color: #1a40ff;
+    position: absolute;
+    top: 52%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 29px;
+    
+}
+
+.lockicon {
+    padding-left: 302px;
+    margin-top: -71px;
+
+}
+
+/* Style for the container of radio buttons */
+.cs-form .radio-container {
+    display: flex; /* Use Flexbox to align items horizontally */
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* Style for individual radio button and label containers */
+.cs-form .radio-item {
+    display: flex;
+    align-items: center;
+    margin-right: 30px; /* Space between radio buttons */
+}
+
+/* Hide default radio button appearance */
+.cs-form .radio-btn {
+    -webkit-appearance: none; /* Hide default radio button in WebKit browsers */
+    -moz-appearance: none; /* Hide default radio button in Firefox */
+    appearance: none; /* Hide default radio button in other browsers */
+    width: 20px; /* Size of the custom radio button */
+    height: 20px;
+    border-radius: 50%; /* Make it circular */
+    border: 2px solid #007bff; /* Border color */
+    background-color: #fff; /* Background color */
+    cursor: pointer;
+    position: relative;
+}
+
+/* Style for the radio button when selected */
+.cs-form .radio-btn:checked {
+    background-color: #007bff; /* Background color when checked */
+    border: 2px solid #0056b3; /* Border color when checked */
+}
+
+/* Custom checkmark */
+.cs-form .radio-btn:checked::after {
+    content: ''; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: #fff; /* Color of the checkmark */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Label styling */
+.cs-form .radio-label {
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+.radio-label{
+    color: #ffffff;
+}
