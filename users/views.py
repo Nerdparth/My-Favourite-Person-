@@ -6,7 +6,7 @@ from django.contrib import messages
 # Create your views here.
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('/home/')
+        return redirect('/')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -21,6 +21,8 @@ def signup(request):
            myuser.email = username+"@mfp.com"
            myuser.save()
            messages.success(request, 'Your account has been created!')
+           user = authenticate(request, username=username, password=password)
+           login(request, user)
            return redirect('/bot/bot-setup/')
     return render(request, "users/signup.html")
 
