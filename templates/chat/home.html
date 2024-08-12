@@ -42,8 +42,8 @@
         <div class="chat-profile d-flex flex-row">
             <div class="chat-profile-img"></div>
             <div class="main-chat-profile-user mx-2  d-flex flex-column">
-                <b> My Fav Person</b>
-                <small class="font-small" style="font-size: 8px;">@XhsjdJKsdn</small>
+                <b> {{bot.name}}</b>
+                <small class="font-small" style="font-size: 8px;">@{{bot.uuid}}</small>
             </div>
         </div>
     </div>
@@ -151,7 +151,7 @@
 
     $(document).ready(function () {
         $.ajax({
-            url: "http://127.0.0.1:8000/init-chat",
+            url: "{% url 'send-message' %}",
             type: "POST",
             data: {
                 'user_id': "{{request.user.id}}",
