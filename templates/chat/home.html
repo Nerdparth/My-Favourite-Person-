@@ -27,13 +27,12 @@
     }
     .sending{
         background-color: #0072dc !important;
-        margin-right: 10px;
+        animation:blinker 0.8s linear infinite;
     }
-    .sending::after{
-        content: "...";
-        color: white;
-        position: relative;
-        left: 30px;
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
     }
 </style>
 {% if request.user.is_authenticated %}
@@ -75,14 +74,14 @@
     let chat_id;
     let chatSocket;
     function scrollToBottom() {
-            const chatMessages = document.querySelector('.chat-messages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
     function connectChatWs() {
         chatSocket = new WebSocket(
             'ws://' + "127.0.0.1:8000" + '/ws/chat/' + chat_id + '/'
         );
-         chatSocket.onopen = function (e) {
+        chatSocket.onopen = function (e) {
             console.log('WebSocket connection opened');
         };
 
@@ -94,8 +93,6 @@
             console.error('WebSocket error:', e);
         };
         chatSocket.onmessage = function (e) {
-            // remove last message from the .chat-messages
-
             const data = JSON.parse(e.data);
             console.log("data", data);
             $(".chat-messages").find('.sending').remove();
@@ -104,24 +101,24 @@
         };
 
     }
-   
 
-    
+
+
     function generateChatToHtml(chatMsg) {
 
-        let message = `<div class="main-message ${chatMsg.status} ${chatMsg.sender}">${chatMsg.message}</div>`;
+        let message = `<div class="main-message ${chatMsg.sender} ${chatMsg.status}">${chatMsg.message}</div>`;
         return message;
     }
 
     function renderChatsToHtml(chats) {
-            let chatMessages = $(".chat-messages");
-            $(".chat-messages").html("");
-            chats.forEach(chat => {
-                let message = `<div class="main-message ${chat.sender}">${chat.message}</div>`;
-                chatMessages.append(message);
-            });
-            scrollToBottom();  // Scroll to bottom after rendering all chats
-        }
+        let chatMessages = $(".chat-messages");
+        $(".chat-messages").html("");
+        chats.forEach(chat => {
+            let message = `<div class="main-message ${chat.sender} ">${chat.message}</div>`;
+            chatMessages.append(message);
+        });
+        scrollToBottom();  // Scroll to bottom after rendering all chats
+    }
 
     function buildchat() {
         $.ajax({
@@ -137,13 +134,16 @@
         });
     };
 
+
+
+
     document.querySelector('.send-btn').onclick = function (e) {
         if (chatSocket.readyState === WebSocket.OPEN) {
             const messageInputDom = document.querySelector('.chat-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({ 'message': message, "is_bot": "False" }));
             messageInputDom.value = '';
-            $(".chat-messages").append(generateChatToHtml({ 'message': message,'status':"sending", "sender": "user" }));
+            $(".chat-messages").append(generateChatToHtml({ 'message': message, 'status': "sending", "sender": "user" }));
         } else {
             console.error('WebSocket is not open. ReadyState: ', chatSocket.readyState);
         }
@@ -151,23 +151,25 @@
 
     $(document).ready(function () {
         $.ajax({
-            url: "{% url 'send-message' %}",
+            url: "http://127.0.0.1:8000/init-chat",
             type: "POST",
             data: {
                 'user_id': "{{request.user.id}}",
+
             },
             success: function (response) {
                 console.log(response);
                 chat_id = response['data']['chat_id']
                 buildchat();
                 connectChatWs();
-
             },
             error: function (error) {
                 console.log(error);
             }
         })
     });
+
+    
 
 
 
