@@ -195,6 +195,7 @@ body {
     outline: none;
     background: #374EF3;
     color: white;
+    z-index: 3;
 }
 .cs-button {
     height: 50px;

@@ -32,8 +32,8 @@
         <div class="chat-profile d-flex flex-row">
             <div class="chat-profile-img"></div>
             <div class="main-chat-profile-user mx-2  d-flex flex-column">
-                <b> My Fav Person</b>
-                <small class="font-small" style="font-size: 8px;">@XhsjdJKsdn</small>
+                <b> {{bot.name}}</b>
+                <small class="font-small" style="font-size: 8px;">@{{bot.uuid}}</small>
             </div>
         </div>
     </div>
@@ -70,7 +70,7 @@
 
     function buildchat(){
         $.ajax({
-            url: "{% url 'get-messages' %}",
+            url: "",
             type: "GET",
             success: function (response) {
                 console.log(response);
@@ -89,7 +89,7 @@
         e.preventDefault();
         let message = $(".chat-input").val();
         $.ajax({
-            url: "{% url 'send-message' %}",
+            url: "",
             type: "POST",
             data: {
                 message: message,

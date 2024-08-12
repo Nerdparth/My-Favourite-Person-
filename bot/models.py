@@ -3,14 +3,18 @@ import uuid
 from django.contrib.auth.models import User
 
 # Create your models here.
-class bot_information(models.Model):
+class BotInforamtion(models.Model):  #BotInforamtion
     GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female')]
+        ('M', 'Male'),
+        ('F', 'Female'),]
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     age=models.IntegerField(null=False, blank=False)
-    gender=models.CharField(null=False, blank=False, max_length=6, choices=GENDER_CHOICES, default='male')
-
-    # image = models.ImageField(upload_to='media\images')
+    gender=models.CharField(null=False, blank=False, max_length=1, choices=GENDER_CHOICES, default='F')
+    image = models.ImageField(upload_to='media\images',null=True,blank=True)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    chat_file = models.FileField(blank=True,null=True,upload_to="media/chats")
+
+
+    def __str__(self):
+        return self.user.username + str(self.uuid)
