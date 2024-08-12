@@ -25,6 +25,16 @@
         color: #1a1a1a;
         align-self: flex-start;
     }
+    .sending{
+        background-color: #0072dc !important;
+        margin-right: 10px;
+    }
+    .sending::after{
+        content: "...";
+        color: white;
+        position: relative;
+        left: 30px;
+    }
 </style>
 {% if request.user.is_authenticated %}
 <div class="main-chat">
@@ -84,8 +94,11 @@
             console.error('WebSocket error:', e);
         };
         chatSocket.onmessage = function (e) {
+            // remove last message from the .chat-messages
+
             const data = JSON.parse(e.data);
             console.log("data", data);
+            $(".chat-messages").find('.sending').remove();
             $(".chat-messages").append(generateChatToHtml(data));
             scrollToBottom();  // Scroll to bottom after appending the message
         };
@@ -96,7 +109,7 @@
     
     function generateChatToHtml(chatMsg) {
 
-        let message = `<div class="main-message ${chatMsg.sender}">${chatMsg.message}</div>`;
+        let message = `<div class="main-message ${chatMsg.status} ${chatMsg.sender}">${chatMsg.message}</div>`;
         return message;
     }
 
@@ -130,6 +143,7 @@
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({ 'message': message, "is_bot": "False" }));
             messageInputDom.value = '';
+            $(".chat-messages").append(generateChatToHtml({ 'message': message,'status':"sending", "sender": "user" }));
         } else {
             console.error('WebSocket is not open. ReadyState: ', chatSocket.readyState);
         }
