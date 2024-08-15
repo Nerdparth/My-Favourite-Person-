@@ -1,11 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chat setup</title>
-</head>
-<body>
-    <h1>chat setup</h1>
-</body>
-</html>
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div style="z-index: 1;"><img style="width: 700px; height: 600px; padding-left: 140px; position: fixed; top: 175px; left: 330px;" src="/media/images/JENNIE_JIN-removebg-preview.png" alt=""></div>
+<div class="login-container">
+    <div>
+        <div class="d-flex justify-content-end" style="height:100px">
+            
+            <div>
+                <img src="/media/images/moon.png" alt="" class="moon-img">
+            </div>
+        </div>
+        <div class="chat-container_chat-setup">
+        <!-- <div class="chat-container_chat-setup2"></div> -->
+        <form enctype='multipart/form-data' method="post" style="z-index: 46;" action="{% url 'chat-setup' %}" class="cs-form-chat-setup">
+          {% csrf_token %}
+          <p class="privacymessage4">Drop your old chats... <br> or click to select</p>
+          <label for="drop-area" id="drop-area2">drop an image</label>
+          <input type="file" name="person_image" id="drop-area">
+          <div id="file-name-display" class="file-name-display"></div>
+          <input type="text" name="describe" class="cs-form-control " placeholder="Describe your favourite person" id="">
+          <button style="z-index: 46;" type="submit">Bring To Life</button>
+          </form>
+            
+            <!-- <div class="radio-container">
+                <div class="radio-item">
+                    <input type="radio" name="gender" value="M" id="male" class="radio-btn">
+                    <label for="male" class="radio-label">Male</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" name="gender" value="F" id="female" class="radio-btn">
+                    <label for="female" class="radio-label">Female</label>
+                </div>
+            </div> -->
+            
+           
+    </div>
+</div>
+
+<script>
+// Get references to the drop area and other elements
+const dropArea = document.querySelector('.chat-container_chat-setup');
+const inputFile = document.getElementById('drop-area');
+const fileNameDisplay = document.getElementById('file-name-display');
+const privacyMessage = document.querySelector('.privacymessage4');
+
+// Prevent default drag behaviors
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+// Handle drag enter event
+function handleDragEnter(e) {
+  preventDefaults(e);
+  dropArea.classList.add('active'); // Add active class to trigger transition
+}
+
+// Handle drag leave event
+function handleDragLeave(e) {
+  preventDefaults(e);
+  dropArea.classList.remove('active'); // Remove active class to revert transition
+}
+
+// Handle drop event
+function handleDrop(e) {
+  preventDefaults(e);
+  dropArea.classList.remove('active'); // Remove active class to revert transition
+  const files = e.dataTransfer.files;
+  if (files.length > 0) {
+    displayFileName(files[0]);
+    hidePrivacyMessage();
+  }
+}
+
+// Handle files
+function displayFileName(file) {
+  if (file) {
+    fileNameDisplay.textContent = file.name; // Display the file name
+  }
+}
+
+// Hide the privacy message
+function hidePrivacyMessage() {
+  if (privacyMessage) {
+    privacyMessage.style.display = 'none'; // Hide the privacy message
+  }
+}
+
+// Add event listeners for drag and drop
+dropArea.addEventListener('dragenter', handleDragEnter, false);
+dropArea.addEventListener('dragover', preventDefaults, false);
+dropArea.addEventListener('dragleave', handleDragLeave, false);
+dropArea.addEventListener('drop', handleDrop, false);
+
+// Trigger file input click when label is clicked
+inputFile.addEventListener('click', () => inputFile.click());
+
+// Handle file selection from input
+inputFile.addEventListener('change', (e) => {
+  const files = e.target.files;
+  if (files.length > 0) {
+    displayFileName(files[0]);
+    hidePrivacyMessage();
+  }
+});
+
+</script>
+  
+
+{% endblock content %}
+

@@ -11,25 +11,29 @@ def signup(request):
         username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
+        if password.strip() != "" or confirm_password.strip() !="": 
+            if password != confirm_password:
+                messages.error(request, 'Passwords do not match')
+                return render(request, "users/signup.html")
         
-        if password != confirm_password:
-            messages.error(request, 'Passwords do not match')
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already exists. Please choose a different one.")
+                return render(request, "users/signup.html")
+        
+            # Create new user
+            User.objects.create_user(username=username, password=password)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user) 
+
+            messages.success(request, 'Your account has been created!')
+            return redirect('/bot/bot-setup/')    
+        else:
+            messages.error(request, 'Password cannot be empty')
+
             return render(request, "users/signup.html")
         
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists. Please choose a different one.")
-            return render(request, "users/signup.html")
         
-        # Create new user
-        User.objects.create_user(username=username, password=password)
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user) 
-        # Optionally log in the user
-        # login(request, myuser)
-        
-        messages.success(request, 'Your account has been created!')
-        return redirect('/bot/bot-setup/')
     
     return render(request, "users/signup.html")
 
@@ -62,7 +66,7 @@ def login_view(request):
         if user is not None:
             login(request, user) # login here
             messages.success(request, 'You have been logged')
-            return redirect('home')  # Redirect to a home page or dashboard
+            return redirect('/')  # Redirect to a home page or dashboard
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'users/login.html')
