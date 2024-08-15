@@ -29,10 +29,32 @@
         background-color: #0072dc !important;
         animation:blinker 0.8s linear infinite;
     }
+    .recieving{
+        background-color: #ffffff !important;
+        color: #757575;
+        animation: shimer 0.8s linear infinite;
+    }
+
+    @keyframes shimer {
+        0% {
+            background-color: #f0f0f0;
+        }
+        50% {
+            background-color: #e0e0e0;
+        }
+        100% {
+            background-color: #f0f0f0;
+        }
+    }
     @keyframes blinker {
         50% {
             opacity: 0;
         }
+    }
+     .chat-input {
+        max-height: 100px;
+        min-height:42px !important;/* Set maximum height */
+        resize: none;
     }
 </style>
 {% if request.user.is_authenticated %}
@@ -51,8 +73,8 @@
             favourite person?</div>
         <div class="message user">ofc..but how?</div>
     </div>
-    <div class="chat-input-container">
-        <input type="text" class="cs-form-control chat-input" placeholder="type message..">
+    <div class="chat-input-container px-2">
+        <textarea type="text" class="cs-form-control chat-input pt-2" placeholder="type message.."></textarea>
         <button class="send-btn"><i class="fa-solid fa-circle-arrow-right"></i></button>
     </div>
 
@@ -74,9 +96,22 @@
     let chat_id;
     let chatSocket;
     function scrollToBottom() {
-        const chatMessages = document.querySelector('.chat-messages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+         document.querySelector('.chat-input').addEventListener('input', function () {
+                const chatInput = this;
+                let height = $('.chat-input').val().length;
+                console.log(height);
+                let n = height ;
+                console.log(n);
+                chatInput.style.height = n*50 + 'px'; // Set height based on content
+                scrollToBottom(); // Ensure chat stays scrolled to bottom
+            });
+
+
+
     function connectChatWs() {
         chatSocket = new WebSocket(
             'ws://' + "127.0.0.1:8000" + '/ws/chat/' + chat_id + '/'
@@ -96,6 +131,7 @@
             const data = JSON.parse(e.data);
             console.log("data", data);
             $(".chat-messages").find('.sending').remove();
+            $(".chat-messages").find('.recieving').remove();
             $(".chat-messages").append(generateChatToHtml(data));
             scrollToBottom();  // Scroll to bottom after appending the message
         };
@@ -136,18 +172,38 @@
 
 
 
+    document.addEventListener('DOMContentLoaded', function () {
+        scrollToBottom();
+    });
 
-    document.querySelector('.send-btn').onclick = function (e) {
-        if (chatSocket.readyState === WebSocket.OPEN) {
-            const messageInputDom = document.querySelector('.chat-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({ 'message': message, "is_bot": "False" }));
-            messageInputDom.value = '';
-            $(".chat-messages").append(generateChatToHtml({ 'message': message, 'status': "sending", "sender": "user" }));
-        } else {
-            console.error('WebSocket is not open. ReadyState: ', chatSocket.readyState);
+    // send message if enter key is pressed
+
+    document.querySelector('.chat-input').onkeyup = function (e) {
+        if (e.keyCode === 13) {
+            document.querySelector('.send-btn').click();
         }
     };
+
+    document.querySelector('.send-btn').onclick = function (e) {
+            if (chatSocket.readyState === WebSocket.OPEN) {
+                const messageInputDom = document.querySelector('.chat-input');
+                const message = messageInputDom.value;
+                if (message.trim() === "") {
+                    return;
+                }
+                chatSocket.send(JSON.stringify({ 'message': message, "is_bot": "False" }));
+                messageInputDom.value = '';
+
+                // Reset input height after sending a message
+                messageInputDom.style.height = 'auto';
+
+                $(".chat-messages").append(generateChatToHtml({ 'message': message, 'status': "sending", "sender": "user" }));
+                $(".chat-messages").append(generateChatToHtml({ 'message': "typing...", 'status': "recieving", "sender": "bot" }));
+                scrollToBottom();
+            } else {
+                console.error('WebSocket is not open. ReadyState: ', chatSocket.readyState);
+            }
+        };
 
     $(document).ready(function () {
         $.ajax({
