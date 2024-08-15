@@ -7,10 +7,17 @@ from bot.models import BotInforamtion
 def index(request):
     return JsonResponse({'message': 'Hello World!'})
 
+
 def home(request):
+    
     user = request.user
-    bot  = BotInforamtion.objects.get(user=user)
+    bot = None
+    if user.is_authenticated:
+        bot  = BotInforamtion.objects.get(user=user)
+    
     return render(request, "chat/home.html",context={"bot":bot})
+
+
 
 
 # class Chat:

@@ -18,3 +18,4 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return self.uuid
+    
