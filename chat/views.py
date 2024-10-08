@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from bot.models import BotInforamtion
@@ -13,8 +13,10 @@ def home(request):
     user = request.user
     bot = None
     if user.is_authenticated:
-        bot  = BotInforamtion.objects.get(user=user)
-    
+        try:
+            bot  = BotInforamtion.objects.get(user=user)
+        except:
+            return redirect('/bot/bot-setup')    
     return render(request, "chat/home.html",context={"bot":bot})
 
 

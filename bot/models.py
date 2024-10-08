@@ -13,8 +13,10 @@ class BotInforamtion(models.Model):  #BotInforamtion
     gender=models.CharField(null=False, blank=False, max_length=1, choices=GENDER_CHOICES, default='F')
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(upload_to='media\images',null=True,blank=True)
-    chat_file = models.FileField(blank=True,null=True,upload_to="media/chats")
+    chat_file = models.TextField(blank=True,null=True)
     botdescription = models.CharField(max_length=255, blank=True, null=True, default="my favourite person")
+    
+
 
     def __str__(self):
         return self.user.username + str(self.uuid)

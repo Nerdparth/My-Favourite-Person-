@@ -73,7 +73,7 @@
     <div class="chat-messages">
         <div class="message bot">need your <br>
             favourite person?</div>
-        <div class="message user">ofc..but how?</div>
+        <div class="message user">{{bot.chat_file}}</div>
     </div>
     <div class="chat-input-container px-2">
         <textarea type="text" class="cs-form-control chat-input pt-2" placeholder="type message.."></textarea>
@@ -105,9 +105,7 @@
          document.querySelector('.chat-input').addEventListener('input', function () {
                 const chatInput = this;
                 let height = $('.chat-input').val().length;
-                console.log(height);
                 let n = height ;
-                console.log(n);
                 chatInput.style.height = n*50 + 'px'; // Set height based on content
                 scrollToBottom(); // Ensure chat stays scrolled to bottom
             });
@@ -208,12 +206,13 @@
         };
 
     $(document).ready(function () {
+        console.log("ready!");
         $.ajax({
             url: "http://127.0.0.1:8000/init-chat",
             type: "POST",
             data: {
                 'user_id': "{{request.user.id}}",
-
+                'chat_history': `{{bot.chat_file}}`
             },
             success: function (response) {
                 console.log(response);
@@ -222,7 +221,7 @@
                 connectChatWs();
             },
             error: function (error) {
-                console.log(error);
+                console.log("error"+error);
             }
         })
     });
