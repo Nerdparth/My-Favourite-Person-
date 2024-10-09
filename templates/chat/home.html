@@ -114,7 +114,7 @@
 
     function connectChatWs() {
         chatSocket = new WebSocket(
-            'ws://' + "127.0.0.1:8000" + '/ws/chat/' + chat_id + '/'
+            'ws://' + "20.40.55.162:8001" + '/ws/chat/' + chat_id + '/'
         );
         chatSocket.onopen = function (e) {
             console.log('WebSocket connection opened');
@@ -158,7 +158,7 @@
 
     function buildchat() {
         $.ajax({
-            url: "http://127.0.0.1:8000/load-chat?chat_id=" + chat_id,
+            url: "http://20.40.55.162:8001/load-chat?chat_id=" + chat_id,
             type: "GET",
             success: function (response) {
                 console.log(response);
@@ -208,7 +208,7 @@
     $(document).ready(function () {
         console.log("ready!");
         $.ajax({
-            url: "http://127.0.0.1:8000/init-chat",
+            url: "http://20.40.55.162:8001/init-chat",
             type: "POST",
             data: {
                 'user_id': "{{request.user.id}}",
