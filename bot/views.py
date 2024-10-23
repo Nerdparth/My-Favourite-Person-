@@ -19,7 +19,7 @@ def bot_setup(request):
         age = request.POST.get('age')
         if BotInforamtion.objects.filter(user = user):
            messages.info(request, "please login, bot information already exists...")
-           return redirect("/user/loin-user")
+           return redirect("/users/login-user")
         BotInforamtion.objects.create(user=user,name=name, age=age, gender=gender)
         return redirect('/bot/chat-setup')
      except:
@@ -29,6 +29,17 @@ def bot_setup(request):
     return render(request, "bot/bot_setup.html")
       
     
+
+import re
+
+def clean_text(text):
+    # Remove HTML tags
+    clean_text = re.sub(r'<.*?>', '', text)
+    
+    # Remove code snippets
+    clean_text = re.sub(r'```.*?```', '', clean_text, flags=re.DOTALL)
+    
+    return clean_text.strip()
     
 def chat_setup(request):
     if not request.user.is_authenticated:
@@ -49,10 +60,14 @@ def chat_setup(request):
         try:
             # Read chat_file and convert to text
             chat_text = chat_file.read().decode('utf-8')
-            bot.chat_file = f"you have to read the chat file and make sure to behave like the same person, just analyse every small detail how that person talks, how he behaves, remember the sole purpose is to not do anything cruel or offensive. Your are {bot.name} in the given chat and i am {user.username}. Gender is {bot.gender} and age is {bot.age} Here is the chat"+ chat_text
+            chat_text = clean_text(chat_text)
+            bot.chat_file = f"you have to read the chat file and make sure to behave like the same person, 
+            just analyse every small detail how that person talks, how he behaves, remember the sole 
+            purpose is to not do anything cruel or offensive. Your are {bot.name} in the given chat and i am 
+            {user.username}. Gender is {bot.gender} and age is {bot.age} Here is the chat"+ chat_text
         except Exception as e:
             print(e)
-            messages.error(request, "Error reading chat file")
+            messages.error(request, "Error reading chat file"+str(e))
             return redirect('/bot/chat-setup')
         
         bot.save()

@@ -68,12 +68,13 @@
                 <b> {{bot.name}}</b>
                 <small class="font-small" style="font-size: 8px;">@{{bot.uuid}}</small>
             </div>
+            <div><a href="/users/logout/" class="text-danger">Logout</a></div>
         </div>
     </div>
     <div class="chat-messages">
         <div class="message bot">need your <br>
             favourite person?</div>
-        <div class="message user">{{bot.chat_file}}</div>
+        <!-- <div class="message user"></div> -->
     </div>
     <div class="chat-input-container px-2">
         <textarea type="text" class="cs-form-control chat-input pt-2" placeholder="type message.."></textarea>
@@ -141,17 +142,28 @@
 
 
     function generateChatToHtml(chatMsg) {
-
+        if (chatMsg.message.length > 1000) {
+            chatMsg.message = chatMsg.message.substring(0, 1000) + "...";
+        }
         let message = `<div class="main-message ${chatMsg.sender} ${chatMsg.status}">${chatMsg.message}</div>`;
         return message;
     }
 
     function renderChatsToHtml(chats) {
+        
         let chatMessages = $(".chat-messages");
         $(".chat-messages").html("");
+        console.log(chats);
         chats.forEach(chat => {
-            let message = `<div class="main-message ${chat.sender} ">${chat.message}</div>`;
-            chatMessages.append(message);
+            if (chat.length > 1000) {
+                chat = chat.substring(0, 1000) + "...";
+            }
+            chat.message = chat.message.replace(/(?:\r\n|\r|\n)/g, '<br>');
+            chat.message = chat.message.replace(/(?:\t)/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            chat.message = chat.message.replace("```", '"""');
+            let msg = stringify(chat.message);
+            //let message = `<div class="main-message ${chat.sender} ">${msg}</div>`;
+            //chatMessages.append(message);
         });
         scrollToBottom();  // Scroll to bottom after rendering all chats
     }
@@ -207,12 +219,14 @@
 
     $(document).ready(function () {
         console.log("ready!");
+        let chat_file = `{{bot.chat_file}}`;
+        let chat_to_text = JSON.stringify(chat_file);
         $.ajax({
             url: "http://20.40.55.162:8001/init-chat",
             type: "POST",
             data: {
                 'user_id': "{{request.user.id}}",
-                'chat_history': `{{bot.chat_file}}`
+                'chat_history': chat_to_text,
             },
             success: function (response) {
                 console.log(response);

@@ -17,8 +17,8 @@
           <p class="privacymessage4">Drop your old chats... <br> or click to select</p>
           <label for="drop-area" id="drop-area2">drop a chat file</label>
           <input type="file" name="chat_file"  id="drop-area">
-          <div id="file-name-display" class="file-name-display">click here</div>
-            <input type="text" name="describe" class="cs-form-control " placeholder="Describe your favourite person" id="">
+          <div id="file-name-display" class="file-name-display"><button class="btn btn-primary">Select Chat File</button></div>
+            <input type="text" name="describe" class="cs-form-control mt-4" placeholder="Describe your favourite person" id="">
             <button style="z-index: 46;" type="submit">Bring To Life</button>
         </form>
             
@@ -76,7 +76,9 @@ function handleDrop(e) {
 // Handle files
 function displayFileName(file) {
   if (file) {
-    fileNameDisplay.textContent = file.name; // Display the file name
+    fileNameDisplay.textContent = file.name;
+    
+    // Display the file name
   }
 }
 
