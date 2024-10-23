@@ -61,10 +61,7 @@ def chat_setup(request):
             # Read chat_file and convert to text
             chat_text = chat_file.read().decode('utf-8')
             chat_text = clean_text(chat_text)
-            bot.chat_file = f"you have to read the chat file and make sure to behave like the same person, 
-            just analyse every small detail how that person talks, how he behaves, remember the sole 
-            purpose is to not do anything cruel or offensive. Your are {bot.name} in the given chat and i am 
-            {user.username}. Gender is {bot.gender} and age is {bot.age} Here is the chat"+ chat_text
+            bot.chat_file = f"you have to read the chat file and make sure to behave like the same person, just analyse every small detail how that person talks, how he behaves, remember the sole purpose is to not do anything cruel or offensive. Your are {bot.name} in the given chat and i am {user.username}. Gender is {bot.gender} and age is {bot.age} Here is the chat"+ chat_text
         except Exception as e:
             print(e)
             messages.error(request, "Error reading chat file"+str(e))
